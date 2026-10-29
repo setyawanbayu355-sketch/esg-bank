@@ -5,6 +5,7 @@ Contoh:
     python3 scripts/unduh.py                 # semua
     python3 scripts/unduh.py --kode BBCA     # satu bank
     python3 scripts/unduh.py --tahun 2022 2023
+    python3 scripts/unduh.py --jenis laporan_keberlanjutan   # tanpa lampiran IDX
 
 Hanya pustaka standar Python 3.8+. Berkas disimpan di unduhan/<KODE>/.
 """
@@ -21,6 +22,8 @@ UA = "esg-bank/1.0 (+https://github.com/setyawanbayu355-sketch/esg-bank)"
 
 
 def nama_berkas(r):
+    if r.get("berkas"):
+        return r["berkas"]
     akhir = "" if r["bahasa"] == "id" else "_" + r["bahasa"].upper()
     return f'{r["kode"]}_{r["tahun_buku"]}{akhir}.pdf'
 
@@ -46,6 +49,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--kode", nargs="*")
     ap.add_argument("--tahun", nargs="*")
+    ap.add_argument("--jenis", nargs="*", help="laporan_keberlanjutan, lampiran_laporan_tahunan_idx, formulir_esg_idx")
     ap.add_argument("--keluar", default=str(AKAR / "unduhan"))
     ap.add_argument("--jeda", type=float, default=2.0, help="detik antar unduhan")
     a = ap.parse_args()
@@ -55,10 +59,14 @@ def main():
         baris = [r for r in baris if r["kode"] in {k.upper() for k in a.kode}]
     if a.tahun:
         baris = [r for r in baris if r["tahun_buku"] in set(a.tahun)]
+    if a.jenis:
+        baris = [r for r in baris if r["jenis"] in set(a.jenis)]
     baris = [r for r in baris if r["url"]]
 
     keluar = Path(a.keluar)
+    keluar.mkdir(parents=True, exist_ok=True)
     gagal = 0
+    gagal_url = []
     log = []
     for r in baris:
         tujuan = keluar / r["kode"] / nama_berkas(r)
@@ -73,6 +81,7 @@ def main():
                 time.sleep(a.jeda)
             except Exception as e:  # noqa: BLE001
                 gagal += 1
+                gagal_url.append((tujuan.name, r["url"]))
                 print(f"GAGAL {tujuan.name}: {e}", file=sys.stderr)
                 continue
         sha = hashlib.sha256(isi).hexdigest()
@@ -83,6 +92,13 @@ def main():
         w = csv.writer(f)
         w.writerow(["berkas", "ukuran_byte", "sha256", "url"])
         w.writerows(log)
+    if gagal_url:
+        with open(keluar / "gagal.csv", "w", newline="", encoding="utf-8") as f:
+            w = csv.writer(f)
+            w.writerow(["berkas", "url"])
+            w.writerows(gagal_url)
+        print(f"\nTautan yang gagal ada di {keluar / 'gagal.csv'}. Tautan idx.co.id kadang menolak"
+              " unduhan otomatis; buka tautan itu langsung di browser.")
     print(f"\nSelesai: {len(log)} berkas, {gagal} gagal. Daftar di {keluar / 'manifest.csv'}")
     sys.exit(1 if gagal else 0)
 
