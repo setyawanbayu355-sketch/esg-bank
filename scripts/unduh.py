@@ -17,7 +17,7 @@ import urllib.request
 from pathlib import Path
 
 AKAR = Path(__file__).resolve().parent.parent
-UA = "laporan-keberlanjutan-bank-idx/1.0 (+https://github.com)"
+UA = "esg-bank/1.0 (+https://github.com/setyawanbayu355-sketch/esg-bank)"
 
 
 def nama_berkas(r):

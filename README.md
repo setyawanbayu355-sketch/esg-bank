@@ -21,8 +21,8 @@ cocok dengan bank dan tahun bukunya.
 ## Cara pakai
 
 ```bash
-git clone <url-repo-ini>
-cd laporan-keberlanjutan-bank-idx
+git clone https://github.com/setyawanbayu355-sketch/esg-bank.git
+cd esg-bank
 python3 scripts/unduh.py                    # semua laporan
 python3 scripts/unduh.py --kode BBCA BBRI   # bank tertentu
 python3 scripts/unduh.py --tahun 2023       # tahun buku tertentu
