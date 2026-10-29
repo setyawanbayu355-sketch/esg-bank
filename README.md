@@ -15,8 +15,7 @@ resmi bank, supaya hak cipta tetap pada penerbitnya dan repo tetap ringan.
 | `data/laporan.csv` | Satu baris per laporan: kode, tahun buku, bahasa, URL, sumber, status verifikasi, catatan |
 | `scripts/unduh.py` | Pengunduh, hanya pustaka standar Python 3.8+ |
 
-Kolom `terverifikasi = ya` berarti berkasnya sudah diunduh dan sampulnya dicek
-cocok dengan bank dan tahun bukunya.
+Lihat bagian Cakupan untuk arti kolom `terverifikasi`.
 
 ## Cara pakai
 
@@ -34,9 +33,30 @@ SHA-256 tiap berkas.
 
 ## Cakupan saat ini
 
-Baru empat bank terbesar yang lengkap dan terverifikasi: BBCA, BBRI, BMRI, BBNI
-(2020–2025). Bank lain menyusul. Status per bank bisa dilihat dari
-`data/laporan.csv`.
+| Status | Bank |
+|---|---|
+| Lengkap 2020–2025 | BBCA, BBRI, BMRI, BBNI, BBTN, BNGA, BNII, BRIS, NISP |
+| Sebagian | MEGA (2020–2023), BJBR (2022–2023) |
+| Belum | 37 bank lainnya di `data/bank.csv` |
+
+Kolom `terverifikasi`:
+
+- `ya`: berkas sudah diunduh dan sampulnya cocok dengan bank dan tahun buku.
+- `belum`: tautan diambil dari halaman resmi bank, tetapi berkasnya belum dibuka.
+
+## Cara mencari tautan bank lain
+
+1. Buka situs bank (kolom `situs` di `data/bank.csv`), lalu menu
+   Hubungan Investor → Laporan Keberlanjutan / *Sustainability Report*.
+2. Banyak bank memakai penyedia situs investor yang sama; polanya
+   `https://<domain-investor>/sustainability_reports.html`, dengan berkas di
+   `/misc/SR/`. Contoh: BRI, BSI, CIMB Niaga.
+3. Kalau tidak ada halaman khusus, laporan keberlanjutan biasanya menjadi bab
+   di laporan tahunan. Isi `jenis = laporan_tahunan_terintegrasi`.
+4. Mulai tahun buku 2023, bank juga mengunggahnya ke IDX lewat pengumuman
+   "Penyampaian Laporan Keberlanjutan" di menu Keterbukaan Informasi. Situs
+   IDX membatasi akses otomatis, jadi tautan IDX sebaiknya dibuka lewat
+   browser, bukan skrip.
 
 ## Catatan sumber
 
