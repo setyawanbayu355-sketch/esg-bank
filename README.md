@@ -35,9 +35,9 @@ SHA-256 tiap berkas.
 
 | Status | Bank |
 |---|---|
-| Lengkap 2020–2025 | BBCA, BBRI, BMRI, BBNI, BBTN, BNGA, BNII, BRIS, NISP |
+| Lengkap 2020–2025 | BBCA, BBRI, BMRI, BBNI, BBTN, BNGA, BNII, BRIS, NISP, BTPN |
 | Sebagian | MEGA (2020–2023), BJBR (2022–2023) |
-| Belum | 37 bank lainnya di `data/bank.csv` |
+| Belum | 36 bank lainnya di `data/bank.csv` |
 
 Kolom `terverifikasi`:
 
